@@ -22,7 +22,24 @@ exports.handleRequest = function (req, res) {
      //if so, read that file and send the client that data
     //if not, say 'we don't have that' and give them a 404
 
+    if(req.method === 'POST') {
+      var data = ''
+      req.on('data', function(chunk) {
+        data += chunk;
+      })
 
+      req.on('end', function() {
+        var url = data.slice(4)
+
+        //console.log(archive.isUrlInList(url), writeURL, failFunction);
+        archive.addUrlToList(url)
+      })
+      
+    }
   
 
 };
+
+// var writeURL = function(){
+//   //code to write URL
+// }

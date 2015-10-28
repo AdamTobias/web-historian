@@ -1,6 +1,8 @@
 // Use the code in `archive-helpers.js` to actually download the urls
 // that are waiting.
 
+
+fs.writeFile()
 //this is a node server?
 
 //html fetcher will check sites.txt for any new URLs (how do we know if they are new or not?)

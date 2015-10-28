@@ -26,16 +26,63 @@ exports.initialize = function(pathsObj) {
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function() {
+  //for worker
 };
 
-exports.isUrlInList = function() {
+exports.isUrlInList = function(url, success, failure) {
+  //server
+  fs.readFile('./archives/sites.txt', function(err, data) {
+    if(err) {
+      throw err
+    } else {
+      var lines = data.toString().split('\n');
+      for(var i = 0; i < lines.length; i++){
+        console.log('does ' + url + ' equal ' + lines[i]);
+        if(url === lines[i]) {
+          success();
+          return;
+        }
+      }    
+    }
+    failure();
+  });
+  
+  //return found;
 };
 
-exports.addUrlToList = function() {
+exports.addUrlToList = function(url) {
+  //server for not found urls
+  var toAppend = '\n' + url
+ //fs.open('./archives/sites.txt', 'w', function(err, fd) {
+  fs.appendFile('./archives/sites.txt', toAppend, function(err){
+    if(err) {
+      throw err;
+    } else {
+      console.log('success')
+    }
+  })
+// })
 };
 
-exports.isUrlArchived = function() {
+exports.isUrlArchived = function(url) {
+  //server for posts and gets
+  fs.readdir('./archives/sites', function(err, files) {
+    
+    if(err) {
+      throw err;
+    } else {
+
+      for(var i = 0; i < files.length; i++) {
+        if(url === files[i]) {
+          console.log('found it!')
+        }
+      }
+      console.log('not yet archived!')
+    }
+
+  })
 };
 
 exports.downloadUrls = function() {
+  //worker
 };
