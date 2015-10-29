@@ -36,7 +36,6 @@ exports.readListOfUrls = function() {
 };
 
 exports.isUrlInList = function(url, success, failure) {
-  //server
   fs.readFile('./archives/sites.txt', function(err, data) {
     if(err) {
       throw err
@@ -51,21 +50,16 @@ exports.isUrlInList = function(url, success, failure) {
     }
     failure(url);
   });
-  
-  //return found;
 };
 
 exports.addUrlToList = function(url) {
-  var toAppend = '\n' + url
- //fs.open('./archives/sites.txt', 'w', function(err, fd) {
+  var toAppend = '\n' + url;
   fs.appendFile('./archives/sites.txt', toAppend, function(err){
     if(err) {
       throw err;
     } else {
-      console.log('success')
     }
   })
-// })
 };
 
 exports.isUrlArchived = function(url, success, failure) {
@@ -77,7 +71,6 @@ exports.isUrlArchived = function(url, success, failure) {
 
       for(var i = 0; i < files.length; i++) {
         if(url === files[i]) {
-          console.log('url is archived');
           success(url);
           return;
         }

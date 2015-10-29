@@ -18,10 +18,12 @@ exports.serveAssets = function(res, asset, callback) {
 
   if(asset === 'loading.html'){
     location = archive.paths.siteAssets + '/loading.html';
+  } else if (asset === ''){
+    location = archive.paths.siteAssets + '/index.html';
   }
 
   console.log('location = ' + location);
-  
+
   fs.readFile(location, function(error, content) {
     if(error){
       throw error;
