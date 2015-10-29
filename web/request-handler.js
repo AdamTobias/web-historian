@@ -46,7 +46,7 @@ exports.handleRequest = function (req, res) {
             },
            function notFound(){
             res.writeHead(404, headers.headers);
-            res.end();
+            res.end("Don't have it!!!");
           });
         }
     }
@@ -57,5 +57,3 @@ var sendResponse = function(res, statusCode, path){
   res.writeHead(statusCode, {Location: 'http://localhost:8080/' + url});
   res.end();
 }
-
-archive.downloadUrls('www.groupon.com')

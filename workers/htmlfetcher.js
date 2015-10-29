@@ -1,10 +1,19 @@
-var archive = require('../../helpers/archive-helpers');
+var archive = require('../helpers/archive-helpers');
 
 // Use the code in `archive-helpers.js` to actually download the urls
 // that are waiting.
 
 
-archive.downloadUrls()
+archive.readListOfUrls(archive.paths.list, function readList(url) {
+  
+  archive.isUrlArchived(url, function(){}, function download(url) {
+      
+      archive.downloadUrls(url);
+    
+  });
+});
+
+
 //this is a node server?
 
 //html fetcher will check sites.txt for any new URLs (how do we know if they are new or not?)

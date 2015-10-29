@@ -22,8 +22,6 @@ exports.serveAssets = function(res, asset, callback) {
     location = archive.paths.siteAssets + '/index.html';
   }
 
-  console.log('location = ' + location);
-
   fs.readFile(location, function(error, content) {
     if(error){
       throw error;

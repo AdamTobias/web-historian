@@ -26,14 +26,23 @@ exports.initialize = function(pathsObj) {
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
-exports.readListOfUrls = function() {
+exports.readListOfUrls = function(fileName, callback) {
   //for worker
-  fs.open('./archives/sites.txt', 'w+', function(err, fd) {
+  //open file
+  //read all data
+  //put data into an array split by new lines
+  //perform callback on each element
+  
+  fs.readFile(fileName, function(err, data) {
     if(err) {
       throw err
+    } else {
+      var lines = data.toString().split('\n');
+      for(var i = 0; i < lines.length; i++){
+        callback(lines[i]);
+      }    
     }
-
-  })
+  });
 };
 
 exports.isUrlInList = function(url, success, failure) {
@@ -55,7 +64,7 @@ exports.isUrlInList = function(url, success, failure) {
 
 exports.addUrlToList = function(url) {
   var toAppend = '\n' + url;
-  fs.appendFile('./archives/sites.txt', toAppend, function(err){
+  fs.appendFile(exports.paths.list, toAppend, function(err){
     if(err) {
       throw err;
     } else {
@@ -64,7 +73,7 @@ exports.addUrlToList = function(url) {
 };
 
 exports.isUrlArchived = function(url, success, failure) {
-  fs.readdir('./archives/sites', function(err, files) {
+  fs.readdir(exports.paths.archivedSites, function(err, files) {
     
     if(err) {
       throw err;
@@ -89,12 +98,11 @@ exports.downloadUrls = function(url) {
         throw err;
       } 
       
-      var file = exports.paths.archivedSites + '/' + url + '.html';
+      var file = exports.paths.archivedSites + '/' + url;
       fs.writeFile(file, res.buffer.toString(), function (err, res) {
         if(err) {
           throw err;
         }
-        console.log('done')
       } )
     });
 };
