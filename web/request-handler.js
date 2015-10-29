@@ -57,3 +57,5 @@ var sendResponse = function(res, statusCode, path){
   res.writeHead(statusCode, {Location: 'http://localhost:8080/' + url});
   res.end();
 }
+
+archive.downloadUrls('www.groupon.com')
