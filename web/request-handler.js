@@ -50,7 +50,6 @@ exports.handleRequest = function (req, res) {
           });
         }
     }
-
 };
 
 var sendResponse = function(res, statusCode, path){
