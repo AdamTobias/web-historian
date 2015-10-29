@@ -27,6 +27,12 @@ exports.initialize = function(pathsObj) {
 
 exports.readListOfUrls = function() {
   //for worker
+  fs.open('./archives/sites.txt', 'w+', function(err, fd) {
+    if(err) {
+      throw err
+    }
+
+  })
 };
 
 exports.isUrlInList = function(url, success, failure) {
@@ -51,7 +57,6 @@ exports.isUrlInList = function(url, success, failure) {
 };
 
 exports.addUrlToList = function(url) {
-  //server for not found urls
   var toAppend = '\n' + url
  //fs.open('./archives/sites.txt', 'w', function(err, fd) {
   fs.appendFile('./archives/sites.txt', toAppend, function(err){
@@ -64,8 +69,7 @@ exports.addUrlToList = function(url) {
 // })
 };
 
-exports.isUrlArchived = function(url) {
-  //server for posts and gets
+exports.isUrlArchived = function(url, success, failure) {
   fs.readdir('./archives/sites', function(err, files) {
     
     if(err) {
@@ -74,7 +78,8 @@ exports.isUrlArchived = function(url) {
 
       for(var i = 0; i < files.length; i++) {
         if(url === files[i]) {
-          console.log('found it!')
+          success(url);
+          return;
         }
       }
       console.log('not yet archived!')
