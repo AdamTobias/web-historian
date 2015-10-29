@@ -35,25 +35,49 @@ exports.handleRequest = function (req, res) {
       req.on('end', function() {
         var url = data.slice(4)
 
-        archive.isUrlArchived(url, function(url){
-          console.log('its happening! url = ' + url);
-          res.writeHead(302, {Location: 'http://localhost:8080/' + url});
-          res.end();
-        }, function(){
-          //failure
-          //archive.isUrlInList(url, function(){
-            //success
-            //redirect to loading.html
-          // }, function(){
-          //   //failure
-          //   //archive.addUrlToList(url)
-          // });
-        })
-      
-    })
-  }
+        archive.isUrlArchived(url, 
+          function ArchiveSuccess(url){
+            console.log('its happening! url = ' + url);
+            sendResponse(res, 302, url);
+          }, function ArchiveFailure(url){
+            
+            archive.isUrlInList(url , 
+              function ListSuccess(){
+                console.log('redirect to loading.html');
+                sendResponse(res, 302);
+          
+              }, function ListFailure(url){
+                archive.addUrlToList(url)
+                console.log('added, redirecting')
+                sendResponse(res, 302);
+              });
+          })
+      })
+    } else if (req.method === 'GET') {
+        var url = req.url.slice(1)
+
+        if(url === 'loading.html'){
+          headers.serveAssets(res, url);
+        } else {
+
+          archive.isUrlArchived(url, 
+            function servePage(){
+              headers.serveAssets(res, url)
+            },
+           function notFound(){
+            res.writeHead(404, headers.headers);
+            res.end();
+          });
+        }
+    }
 
 };
+
+var sendResponse = function(res, statusCode, path){
+  var url = path || 'loading.html';
+  res.writeHead(statusCode, {Location: 'http://localhost:8080/' + url});
+  res.end();
+}
 
 // var writeURL = function(){
 //   //code to write URL

@@ -43,14 +43,13 @@ exports.isUrlInList = function(url, success, failure) {
     } else {
       var lines = data.toString().split('\n');
       for(var i = 0; i < lines.length; i++){
-        console.log('does ' + url + ' equal ' + lines[i]);
         if(url === lines[i]) {
           success();
           return;
         }
       }    
     }
-    failure();
+    failure(url);
   });
   
   //return found;
@@ -78,11 +77,12 @@ exports.isUrlArchived = function(url, success, failure) {
 
       for(var i = 0; i < files.length; i++) {
         if(url === files[i]) {
+          console.log('url is archived');
           success(url);
           return;
         }
       }
-      console.log('not yet archived!')
+      failure(url);
     }
 
   })
